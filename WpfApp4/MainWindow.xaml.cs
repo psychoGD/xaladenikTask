@@ -26,12 +26,13 @@ namespace WpfApp4
             public List<string> _Database { get; set; }
             public void ReadDatabase()
             {
-                string text = System.IO.File.ReadAllText(@"~/../../Database.txt");
-                _Database = text.Split('\r').ToList();
+                string text = System.IO.File.ReadAllText(@"~/../../../Files/database.txt");
+                _Database = text.Split('\n','\r').ToList();
             }
             public List<string> GetWord(string word)
             {
-                if()
+                var list2 = _Database.Where(x => x.StartsWith(word));
+                return list2.ToList();
             }
             public Database()
             {
@@ -42,7 +43,11 @@ namespace WpfApp4
         {
             public Database databaseMain { get; set; }
             public List<string> cache { get; set; }
-
+            public Proxy()
+            {
+                cache = new List<string>();
+                databaseMain = new Database();
+            }
             public List<string> GetWord(string word)
             {
                 List<string> list = new List<string>();
@@ -53,21 +58,48 @@ namespace WpfApp4
                         list.Add(item);
                     }
                 }
-                if(list.Count > 0)
+                //return list;
+                if (list.Count > 0)
                 {
                     return list;
                 }
+                else
+                {
+                    var list2 = databaseMain.GetWord(word);
+                    cache.AddRange(list2);
+                    return list2;
+                }
+                
             }
         }
-
+        public Proxy proxy { get; set; }
         public MainWindow()
         {
             InitializeComponent();
+            proxy = new Proxy();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            var list = proxy.GetWord(SearchTB.Text);
+            SuggestLB.Items.Clear();
+            foreach (var item in list)
+            {
+                SuggestLB.Items.Add(item);
+            }
+        }
 
+        private void SuggestLB_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var str = SuggestLB.SelectedItem as string;
+            SearchTB.Text = str;
+            //SuggestLB.Items.Clear();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            TxtBox.AppendText(" "+SearchTB.Text);
+            SearchTB.Clear();
         }
     }
 }

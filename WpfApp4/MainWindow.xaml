@@ -12,12 +12,12 @@
             <RowDefinition Height="0.2*"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <RichTextBox></RichTextBox>
+        <RichTextBox Name="TxtBox"></RichTextBox>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <TextBox Width="700" Height="50" TextChanged="TextBox_TextChanged"></TextBox>
-            <Button Width="50" Content="Submit"></Button>
+            <TextBox Width="700" Height="30" TextChanged="TextBox_TextChanged" Name="SearchTB"></TextBox>
+            <Button Width="50" Content="Submit" Click="Button_Click"></Button>
         </StackPanel>
-        <ListBox Grid.Row="2">
+        <ListBox Grid.Row="2" Name="SuggestLB" MouseDoubleClick="SuggestLB_MouseDoubleClick">
             
         </ListBox>
     </Grid>
